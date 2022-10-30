@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:ital,wght@0,100;0,400;0,500;0,600;0,700;1,200&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>BeZen Meal</title>
+    <style>
+    </style>
+</head>
+
+<body>
+
+    <div id="navbar"></div>
+    <div id="container">
+        <div class="search">
+
+            
+
+        </div>
+
+        <div id="rec">
+
+
+        </div>
+        <div id="in">
+
+        </div>
+        <div id="forms">
+
+        </div>
+        <div id="results"></div>
+    </div>
+    <footer>
+        <p>Copyright © BeZen food Hub 2022</p>
+    </footer>
+</body>
+
+</html>
+<script src="./scripts/index.js" type="module"></script>
+<script src="./scripts/data.js" type="module"></script>
+<script type="module">
+
+    import saved from "./scripts/addnewrecipie.js"
+    document.getElementById("newaddbtn").addEventListener("click", () => {
+        document.getElementById("results").innerHTML = ""
+        
+        saved();
+
+
+    });
+
+
+    //login logic
+    import login from "./scripts/login.js"
+    import sign from "./scripts/signup.js"
+
+    let form = document.getElementById("forms")
+    document.getElementById("Login").addEventListener("click", () => {
+
+        document.getElementById("results").innerHTML = ""
+        document.getElementById("rec").innerHTML = ""
+        document.getElementById("in").innerHTML = ""
+
+        document.getElementById("forms").style.display="block"
+        form.innerHTML = login()
+
+        document.querySelector("#form").addEventListener("submit", loginFun)
+
+        var loginData = JSON.parse(localStorage.getItem("sinUpLocal"))
+        console.log(loginData)
+
+
+
+        function loginFun(event) {
+            event.preventDefault()
+
+            var username = document.querySelector("#username").value
+            var password = document.querySelector("#password").value
+
+            console.log(username, password)
+            var flag = false;
+            for (var i = 0; i < loginData.length; i++) {
+                if (loginData[i].username == username && loginData[i].password == password) {
+                    flag = true
+                    console.log(password)
+                    break
+                }
+            }
+            if (flag == true) {
+                alert("Login success")
+                let status=[{status:"success"}]
+                localStorage.setItem("loginstatus", JSON.stringify(status))
+                window.location.href = './index.html'
+
+            }
+            else if (flag == false) {
+                alert("Login failed")
+            }
+        }
+
+
+    })
+
+    // sign up logic
+
+
+    let form1 = document.getElementById("forms")
+    document.getElementById("sign").addEventListener("click", () => {
+        document.getElementById("forms").style.display="block"
+        document.getElementById("results").innerHTML = ""
+        document.getElementById("rec").innerHTML = ""
+        document.getElementById("in").innerHTML = ""
+        form.innerHTML = sign()
+
+
+        document.querySelector("#form").addEventListener("submit", subFun)
+
+        var signUpArr = JSON.parse(localStorage.getItem("sinUpLocal")) || [];
+
+        function subFun(event) {
+            
+            var email = document.querySelector("#email").value;
+
+            var username = document.querySelector("#username").value
+
+            var password = document.querySelector("#password").value
+
+            console.log(email, username, password)
+
+            var signUpObj = {
+                email: email,
+                username: username,
+                password: password
+
+            }
+
+            console.log(signUpObj)
+            signUpArr.push(signUpObj)
+            console.log(signUpArr)
+            localStorage.setItem("sinUpLocal", JSON.stringify(signUpArr))
+            alert("signUp Successfull")
+            
+           
+
+
+        }
+
+    })
+
+
+</script>
